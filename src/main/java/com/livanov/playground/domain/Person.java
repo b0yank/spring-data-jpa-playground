@@ -3,6 +3,7 @@ package com.livanov.playground.domain;
 import io.hypersistence.utils.hibernate.type.json.JsonBinaryType;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -13,25 +14,20 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
+
 @Getter
 @Entity
 @Table(name = "people")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Person {
 
     @Id
+    @EqualsAndHashCode.Include
     private String id;
 
     @Setter
     private String name;
-
-    @ManyToMany(cascade = CascadeType.MERGE)
-    @JoinTable(
-            name = "people_subjects",
-            joinColumns = {@JoinColumn(name = "person_id")},
-            inverseJoinColumns = {@JoinColumn(name = "subject_id")}
-    )
-    private Set<Subject> subjects = new HashSet<>();
 
     @Type(JsonBinaryType.class)
     @Column(columnDefinition = "jsonb")
@@ -47,12 +43,5 @@ public class Person {
             this.tags = new HashSet<>();
         }
         this.tags.addAll(List.of(tags));
-    }
-
-    public void addSubjects(Subject... subjects) {
-        if (this.subjects == null) {
-            this.subjects = new HashSet<>();
-        }
-        this.subjects.addAll(List.of(subjects));
     }
 }

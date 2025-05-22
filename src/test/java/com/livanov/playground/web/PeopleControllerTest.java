@@ -33,10 +33,8 @@ class PeopleControllerTest extends BaseDatabaseIntegrationTest {
     void can_fetch_people() throws Exception {
 
         // GIVEN
-        val subject = subjects.save(new Subject("M1"));
-
         val person = new Person("Lyubo");
-        person.addSubjects(subject);
+        val subject = subjects.save(new Subject("M1", person));
 
         people.save(person);
 

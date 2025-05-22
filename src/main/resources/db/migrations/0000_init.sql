@@ -8,6 +8,7 @@ create table people
 create table subjects
 (
     id text primary key,
+    person_id text not null references people(id),
     code text not null
 );
 
@@ -18,10 +19,10 @@ create table subject_names
     value text not null
 );
 
-create table people_subjects
-(
-    person_id text not null references people(id),
-    subject_id text not null references subjects(id),
-
-    unique (person_id, subject_id)
-);
+--create table people_subjects
+--(
+--    person_id text not null references people(id),
+--    subject_id text not null references subjects(id),
+--
+--    unique (person_id, subject_id)
+--);

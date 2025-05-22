@@ -33,23 +33,25 @@ public class PlaygroundApplicationLocal {
 
             return args -> {
 
-                val subject1 = subjects.save(new Subject("M1",
+                val person1 = new Person("Lyubo");
+                person1.addTags("student", "musician");
+
+                val person2 = new Person("George");
+                person2.addTags("student", "painter");
+
+                val subject1 = subjects.save(new Subject(
+                        "M1",
+                        person1,
                         new Subject.Name("en", "Mathematics"),
                         new Subject.Name("bg", "Математика")
                 ));
 
-                val subject2 = subjects.save(new Subject("P1",
+                val subject2 = subjects.save(new Subject(
+                        "P1",
+                        person2,
                         new Subject.Name("en", "Physics"),
                         new Subject.Name("bg", "Физика")
                 ));
-
-                val person1 = new Person("Lyubo");
-                person1.addTags("student", "musician");
-                person1.addSubjects(subject1, subject2);
-
-                val person2 = new Person("George");
-                person2.addTags("student", "painter");
-                person2.addSubjects(subject1);
 
                 people.saveAll(List.of(person1, person2));
             };

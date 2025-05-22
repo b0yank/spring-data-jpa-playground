@@ -11,4 +11,11 @@ public interface SubjectsRepository extends ListCrudRepository<Subject, String> 
                  WHERE EXISTS (SELECT 1 FROM s.names n WHERE n.value ILIKE concat('%', :name, '%'))
             """)
     List<Subject> findByName(String name);
+
+    @Query("""
+        SELECT new com.livanov.playground.domain.PersonSubject(p, s)
+        FROM Person p
+        LEFT JOIN Subject s ON s.person = p
+    """)
+    List<PersonSubject> getPersonSubjects();
 }

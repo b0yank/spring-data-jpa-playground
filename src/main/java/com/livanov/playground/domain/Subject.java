@@ -2,6 +2,7 @@ package com.livanov.playground.domain;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -15,13 +16,19 @@ import static java.util.stream.Collectors.toSet;
 @Entity
 @Table(name = "subjects")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Subject {
 
     @Id
+    @EqualsAndHashCode.Include
     private String id;
 
     @Column(name = "code")
     private String code;
+
+    @Getter
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Person person;
 
     @ElementCollection
     @CollectionTable(
@@ -30,9 +37,10 @@ public class Subject {
     )
     private Set<Name> names;
 
-    public Subject(String code, Name... names) {
+    public Subject(String code, Person person, Name... names) {
         this.id = UUID.randomUUID().toString();
         this.code = code;
+        this.person = person;
         this.names = Arrays.stream(names).collect(toSet());
     }
 
